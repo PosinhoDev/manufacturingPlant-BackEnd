@@ -14,16 +14,22 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class ProductoService implements ProductoRespository{
+
     @Autowired
     private ProductoRespository productoRespository;
+
+    @Override
+    public List<Producto> findAll() {
+        return null;
+    }
 
     /**
      *
      * */
-    @Override
-    public List<Producto> findAll() {
-        return productoRespository.findAll();
-    }
+//    @Override
+//    public static List<Producto> findAll() {
+//        return productoRepository.findAll();
+//    }
 
     @Override
     public List<Producto> findAll(Sort sort) {
@@ -176,5 +182,20 @@ public class ProductoService implements ProductoRespository{
     @Override
     public <S extends Producto, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    public Optional<Object> getProduct(Long productId) {
+        return Optional.of(productoRespository.getReferenceById(productId));
+    }
+
+    public Optional<Object> getByCategory(int categoryId) {
+        return productoRespository.getByCategory(categoryId);
+    }
+
+    public Boolean delete(Long productId) {
+        return getProduct(productId).map(product -> {
+            productoRespository.delete(productId);
+            return true;
+        }).orElse(false);
     }
 }
